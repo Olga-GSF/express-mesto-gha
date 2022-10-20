@@ -55,7 +55,7 @@ const likeCard = (req, res) => Card.findByIdAndUpdate(
     return res.send({ data: card });
   })
   .catch((err) => {
-    if (err.name === 'ValidationError') {
+    if (err) {
       return res.status(400).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
     }
     if (err instanceof mongoose.Error.CastError) {
@@ -76,7 +76,7 @@ const dislikeCard = (req, res) => Card.findByIdAndUpdate(
     return res.send({ data: card });
   })
   .catch((err) => {
-    if (err.name === 'ValidationError') {
+    if (err) {
       return res.status(400).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
     }
     if (err instanceof mongoose.Error.CastError) {
