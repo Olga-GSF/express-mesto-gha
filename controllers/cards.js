@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
 const Card = require('../models/card');
+const {
+  NOT_FOUND_ERROR,
+  VALIDATION_ERROR,
+  SERVER_ERROR,
+  ERROR_MESSAGE,
+} = require('../utils/constants');
 
 const createCards = (req, res) => {
   const { name, link } = req.body;
@@ -11,9 +17,9 @@ const createCards = (req, res) => {
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        return res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
+        return res.status(VALIDATION_ERROR).send({ message: ERROR_MESSAGE.GET_CARDS_ERROR });
       }
-      return res.status(500).send({ message: 'Ошибка по умолчанию' });
+      return res.status(SERVER_ERROR).send({ message: ERROR_MESSAGE.SERVER_ERROR });
     });
 };
 
@@ -23,7 +29,7 @@ const getCards = (req, res) => {
       res.send({ data: cards });
     })
     .catch(() => {
-      res.status(500).send({ message: 'Ошибка по умолчанию' });
+      res.status(SERVER_ERROR).send({ message: ERROR_MESSAGE.SERVER_ERROR });
     });
 };
 
@@ -31,15 +37,15 @@ const deleteCardById = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
       if (!card) {
-        return res.status(404).send({ message: 'Передан несуществующий _id карточки' });
+        return res.status(NOT_FOUND_ERROR).send({ message: ERROR_MESSAGE.DELETE_CARDSID_ERROR });
       }
       return res.send({ data: card });
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        return res.status(400).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
+        return res.status(VALIDATION_ERROR).send({ message: ERROR_MESSAGE.LIKE_CARDID_VALIDAT_ER });
       }
-      return res.status(500).send({ message: 'Ошибка по умолчанию' });
+      return res.status(SERVER_ERROR).send({ message: ERROR_MESSAGE.SERVER_ERROR });
     });
 };
 
@@ -50,18 +56,15 @@ const likeCard = (req, res) => Card.findByIdAndUpdate(
 )
   .then((card) => {
     if (!card) {
-      return res.status(404).send({ message: 'Карточка с указанным _id не найдена' });
+      return res.status(NOT_FOUND_ERROR).send({ message: ERROR_MESSAGE.DELETE_CARDSID_ERROR });
     }
     return res.send({ data: card });
   })
   .catch((err) => {
-    if (err) {
-      return res.status(400).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
-    }
     if (err instanceof mongoose.Error.CastError) {
-      return res.status(400).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
+      return res.status(VALIDATION_ERROR).send({ message: ERROR_MESSAGE.LIKE_CARDID_VALIDAT_ER });
     }
-    return res.status(500).send({ message: 'Ошибка по умолчанию' });
+    return res.status(SERVER_ERROR).send({ message: ERROR_MESSAGE.SERVER_ERROR });
   });
 
 const dislikeCard = (req, res) => Card.findByIdAndUpdate(
@@ -71,18 +74,15 @@ const dislikeCard = (req, res) => Card.findByIdAndUpdate(
 )
   .then((card) => {
     if (!card) {
-      return res.status(404).send({ message: 'Карточка с указанным _id не найдена' });
+      return res.status(NOT_FOUND_ERROR).send({ message: ERROR_MESSAGE.DELETE_CARDSID_ERROR });
     }
     return res.send({ data: card });
   })
   .catch((err) => {
-    if (err) {
-      return res.status(400).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
-    }
     if (err instanceof mongoose.Error.CastError) {
-      return res.status(400).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
+      return res.status(VALIDATION_ERROR).send({ message: ERROR_MESSAGE.LIKE_CARDID_VALIDAT_ER });
     }
-    return res.status(500).send({ message: 'Ошибка по умолчанию' });
+    return res.status(SERVER_ERROR).send({ message: ERROR_MESSAGE.SERVER_ERROR });
   });
 
 module.exports = {
