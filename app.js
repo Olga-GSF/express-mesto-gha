@@ -9,6 +9,10 @@ mongoose.connect(MONGO_URL);
 
 const app = express();
 
+const {
+  NOT_FOUND_ERROR
+} = require('../utils/constants');
+
 app.use((req, res, next) => {
   req.user = {
     _id: '634f1866af678273c9596322',
@@ -23,7 +27,7 @@ app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
 app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Не найдено' });
+  res.status(NOT_FOUND_ERROR).send({ message: ERROR_MESSAGE.NOT_FOUND_ERROR });
 });
 
 app.listen(PORT, () => {

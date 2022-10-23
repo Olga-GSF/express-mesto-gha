@@ -10,6 +10,7 @@ const ERROR_MESSAGE = {
   LIKE_CARDID_VALIDAT_ER: 'Переданы некорректные данные для постановки/снятии лайка',
   LIKE_CARDIN_NOT_FOUND_E: 'Передан несуществующий _id карточки',
   SERVER_ERROR: 'Ошибка по умолчанию',
+  NOT_FOUND_ERROR: 'Не найдено',
 };
 
 module.exports = {
