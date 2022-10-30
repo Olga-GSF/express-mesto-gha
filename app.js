@@ -10,8 +10,9 @@ mongoose.connect(MONGO_URL);
 const app = express();
 
 const {
-  NOT_FOUND_ERROR
-} = require('../utils/constants');
+  NOT_FOUND_ERROR,
+  ERROR_MESSAGE,
+} = require('./utils/constants');
 
 app.use((req, res, next) => {
   req.user = {
