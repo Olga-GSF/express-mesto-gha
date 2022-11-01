@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 const {
-  createUser, getUser, getUserById, updateUser, updateAvatar,
+  getAuthorizedUser, getUser, getUserById, updateUser, updateAvatar,
 } = require('../controllers/users');
 
-router.post('/', createUser);
+router.get('/me', getAuthorizedUser);
 
 router.get('/', getUser);
 
