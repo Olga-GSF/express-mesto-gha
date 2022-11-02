@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Card = require('../models/card');
 const {
   STATUS_CODES,
@@ -44,7 +45,12 @@ const deleteCardById = (req, res, next) => {
       return Card.findByIdAndRemove(req.params.cardId)
         .then((removedCard) => res.send(removedCard));
     })
-    .catch(next);
+    .catch((err) => {
+      if (err instanceof mongoose.Error.CastError) {
+        return next(new BadRequestErr(ERROR_MESSAGE.DELETE_CARDSID_ERROR));
+      }
+      return next(err);
+    });
 };
 
 const likeCard = (req, res, next) => Card.findByIdAndUpdate(
@@ -58,7 +64,12 @@ const likeCard = (req, res, next) => Card.findByIdAndUpdate(
     }
     return res.send({ data: card });
   })
-  .catch(next);
+  .catch((err) => {
+    if (err instanceof mongoose.Error.CastError) {
+      return next(new BadRequestErr(ERROR_MESSAGE.LIKE_CARDID_VALIDAT_ER));
+    }
+    return next(err);
+  });
 
 const dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
   req.params.cardId,
@@ -71,7 +82,12 @@ const dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
     }
     return res.send({ data: card });
   })
-  .catch(next);
+  .catch((err) => {
+    if (err instanceof mongoose.Error.CastError) {
+      return next(new BadRequestErr(ERROR_MESSAGE.LIKE_CARDID_VALIDAT_ER));
+    }
+    return next(err);
+  });
 
 module.exports = {
   createCards,

@@ -82,7 +82,12 @@ const updateUser = (req, res, next) => {
     },
   ).orFail(new NotFoundErr(ERROR_MESSAGE.ID_NOT_FOUND))
     .then((user) => res.send({ data: user }))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        return next(new BadRequestErr(ERROR_MESSAGE.GET_USER_ERROR));
+      }
+      return next(err);
+    });
 };
 
 const updateAvatar = (req, res, next) => {

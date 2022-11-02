@@ -2,10 +2,9 @@
   "name": "express-mesto-gha",
   "version": "1.0.0",
   "description": "[![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml) [![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml)\r # Проект Mesto фронтенд + бэкенд",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "lint": "npx eslint .",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
     "start": "node app.js"
   },
@@ -26,13 +25,11 @@
     "nodemon": "^2.0.20"
   },
   "dependencies": {
-    "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
     "celebrate": "^15.0.1",
     "cookie-parser": "^1.4.6",
     "express": "^4.18.2",
-    "joi": "^17.6.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.5",
     "validator": "^13.7.0"
