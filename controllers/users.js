@@ -114,22 +114,46 @@ const updateAvatar = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-  User.findUserByCredentials(email, password)
+  User.findOne({ email }).select('+password')
     .then((user) => {
-      const token = jwt.sign(
-        { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'secret-key',
-        { expiresIn: '7d' },
-      );
-      res.cookie('jwt', token, {
-        maxAge: 3600000 * 12 * 7,
-        httpOnly: true,
-        sameSite: true,
-      })
-        .send({ message: 'Авторизация прошла успешно!' });
+      bcrypt.compare(password, user.password)
+        .then(() => {
+          const token = jwt.sign(
+            { _id: user._id },
+            NODE_ENV === 'production' ? JWT_SECRET : 'secret-key',
+            { expiresIn: '7d' },
+          );
+          res.cookie('jwt', token, {
+            maxAge: 3600000 * 12 * 7,
+            httpOnly: true,
+            sameSite: true,
+          })
+            .send({ token });
+        });
     })
     .catch(next);
 };
+
+// const login = (req, res, next) => {
+//   const { email, password } = req.body;
+//   User.findUserByCredentials(email, password)
+//     .then((user) => {
+//       const token = jwt.sign(
+//         { _id: user._id },
+//         NODE_ENV === 'production' ? JWT_SECRET : 'secret-key',
+//         { expiresIn: '7d' },
+//       );
+//       res.cookie('jwt', token, {
+//         maxAge: 3600000 * 12 * 7,
+//         httpOnly: true,
+//         sameSite: true,
+//       })
+//         .send({ token });
+//     })
+//     .catch(next);
+// };
+
+// NODE_ENV === 'production' ? JWT_SECRET : 'secret-key',
 
 module.exports = {
   createUser,
